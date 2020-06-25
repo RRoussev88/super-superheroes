@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './home.dart';
+import './screens/home.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
       title: 'Super Superheroes',
       theme: ThemeData(
         primarySwatch: Colors.teal,
+        primaryColor: Colors.teal[500],
         accentColor: const Color(0xFF2A3542),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
