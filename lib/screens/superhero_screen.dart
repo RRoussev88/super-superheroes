@@ -26,6 +26,7 @@ class SuperheroScreen extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
+                // TODO: Make it expandable
                 margin: EdgeInsets.all(10),
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
