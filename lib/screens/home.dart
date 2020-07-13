@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 import '../models/superhero/Superhero.dart';
-import './superhero_screen.dart';
+import '../UI/superhero_tile.dart';
 import '../UI/bottom_sheet_search.dart';
 import '../UI/error_message.dart';
 
@@ -56,6 +56,7 @@ class _HomeState extends State<Home> {
     } on SocketException catch (_) {
       setState(() {
         _hasError = true;
+        // TODO: Put a reload button!
         _errorMessage = 'No Internet connection';
       });
     } catch (error) {
@@ -146,39 +147,11 @@ class _HomeState extends State<Home> {
                       separatorBuilder: (context, index) => Divider(
                         color: Theme.of(context).accentColor.withAlpha(45),
                       ),
-                      itemBuilder: (context, index) => ListTile(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => SuperheroScreen(
-                                _filteredSuperHeroes[index],
-                              ),
-                            ),
-                          );
-                        },
-                        leading: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            _filteredSuperHeroes[index].images.xs,
-                          ),
-                        ),
-                        title: Text(
-                          _filteredSuperHeroes[index].name,
-                        ),
-                        trailing: IconButton(
-                          icon: Icon(Icons.favorite_border),
-                          color: Colors.redAccent,
-                          // TODO: implement favorites functionallity using shared prefs
-                          onPressed: () {},
-                        ),
+                      itemBuilder: (context, index) => SuperheroTile(
+                        _filteredSuperHeroes[index],
                       ),
                       itemCount: _filteredSuperHeroes.length,
                     ),
-        ),
-        // TODO: Remove it and load heroes on app open
-        floatingActionButton: FloatingActionButton(
-          onPressed: _loadHeroes,
-          tooltip: 'Load superheroes',
-          child: Icon(Icons.add),
         ),
       );
 }

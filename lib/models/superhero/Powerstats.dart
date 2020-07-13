@@ -8,7 +8,7 @@ class Powerstats {
   final int power;
   final int combat;
 
-  Powerstats({
+  const Powerstats({
     @required this.intelligence,
     @required this.strength,
     @required this.speed,

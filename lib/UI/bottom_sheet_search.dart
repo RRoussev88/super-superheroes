@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class BottomSheetSearch extends StatelessWidget {
   final TextEditingController searchController;
 
-  BottomSheetSearch({Key key, this.searchController}) : super(key: key);
+  const BottomSheetSearch({Key key, this.searchController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Container(

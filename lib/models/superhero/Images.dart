@@ -6,7 +6,7 @@ class Images {
   final String md;
   final String lg;
 
-  Images({
+  const Images({
     @required this.xs,
     @required this.sm,
     @required this.md,

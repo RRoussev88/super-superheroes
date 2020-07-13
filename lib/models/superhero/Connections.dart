@@ -4,7 +4,7 @@ class Connections {
   final String groupAffiliation;
   final String relatives;
 
-  Connections({
+  const Connections({
     @required this.groupAffiliation,
     @required this.relatives,
   });
