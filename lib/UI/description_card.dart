@@ -13,14 +13,13 @@ class DescriptionCard extends StatefulWidget {
 }
 
 class _DescriptionCardState extends State<DescriptionCard> {
-  Divider _sectionDivider = Divider(height: 15, thickness: 2);
+  final Divider _sectionDivider = const Divider(height: 15, thickness: 2);
 
   double _appBarMaxHeight = 0.0;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    print('dii change dependencies');
     _appBarMaxHeight = Scaffold.of(context).appBarMaxHeight;
   }
 

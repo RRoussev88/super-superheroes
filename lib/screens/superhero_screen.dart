@@ -11,22 +11,24 @@ class SuperheroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(title: Text(superHero.name)),
-        body: Stack(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  // TODO: Use a placeholder image
-                  image: NetworkImage(superHero.images.lg),
+        body: Builder(
+          builder: (BuildContext ctx) => Stack(
+            children: <Widget>[
+              Center(
+                child: FadeInImage.assetNetwork(
+                  height: MediaQuery.of(ctx).size.height -
+                      Scaffold.of(ctx).appBarMaxHeight,
+                  placeholder: 'assets/images/superhero-placeholder.png',
+                  image: superHero.images.lg,
                   fit: BoxFit.fitHeight,
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: DescriptionCard(superHero)
-            ),
-          ],
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: DescriptionCard(superHero),
+              ),
+            ],
+          ),
         ),
       );
 }
