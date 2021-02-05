@@ -15,6 +15,7 @@ class SuperheroScreen extends StatelessWidget {
           builder: (BuildContext ctx) => Stack(
             children: <Widget>[
               Center(
+                // TODO: Create Hero animation if possible
                 child: FadeInImage.assetNetwork(
                   height: MediaQuery.of(ctx).size.height -
                       Scaffold.of(ctx).appBarMaxHeight,

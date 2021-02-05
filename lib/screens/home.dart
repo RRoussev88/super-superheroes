@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
   List<Superhero> _filteredSuperHeroes = [];
   bool _isLodaingHeroes = false;
   bool _hasError = false;
-  String _errorMessage = 'There was an error while loading superheros';
+  String _errorMessage = 'There was an error while loading superheroes';
 
   Future<void> _loadHeroes() async {
     if (_superHeroes.length > 0) {
@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
       _isLodaingHeroes = true;
     });
     try {
-      var response = await http.get("$_baseUrl/all.json");
+      http.Response response = await http.get("$_baseUrl/all.json");
       if (response.statusCode == 200) {
         List<dynamic> decodedHeroes = jsonDecode(response.body);
         if (decodedHeroes.length > 0) {
@@ -56,7 +56,6 @@ class _HomeState extends State<Home> {
     } on SocketException catch (_) {
       setState(() {
         _hasError = true;
-        // TODO: Put a reload button!
         _errorMessage = 'No Internet connection';
       });
     } catch (error) {
@@ -141,12 +140,16 @@ class _HomeState extends State<Home> {
                   child: const CircularProgressIndicator(),
                 )
               : _hasError
-                  ? ErrorMessage(_errorMessage)
+                  ? ErrorMessage(
+                      message: _errorMessage,
+                      reload: _loadHeroes,
+                    )
                   : ListView.separated(
                       // TODO: Add other list options like grid
                       separatorBuilder: (context, index) => Divider(
                         color: Theme.of(context).accentColor.withAlpha(45),
                       ),
+                      // TODO: Fix incorrect images when searching
                       itemBuilder: (context, index) => SuperheroTile(
                         _filteredSuperHeroes[index],
                       ),
