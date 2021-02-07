@@ -133,28 +133,29 @@ class _HomeState extends State<Home> {
             ),
           ],
         ),
-        body: FractionallySizedBox(
-          heightFactor: _heightFactor,
-          child: _isLodaingHeroes
-              ? const Center(
-                  child: const CircularProgressIndicator(),
-                )
-              : _hasError
-                  ? ErrorMessage(
-                      message: _errorMessage,
-                      reload: _loadHeroes,
-                    )
-                  : ListView.separated(
-                      // TODO: Add other list options like grid
-                      separatorBuilder: (context, index) => Divider(
-                        color: Theme.of(context).accentColor.withAlpha(45),
+        body: SafeArea(
+          child: FractionallySizedBox(
+            heightFactor: _heightFactor,
+            child: _isLodaingHeroes
+                ? const Center(
+                    child: const CircularProgressIndicator(),
+                  )
+                : _hasError
+                    ? ErrorMessage(
+                        message: _errorMessage,
+                        reload: _loadHeroes,
+                      )
+                    : ListView.separated(
+                        // TODO: Add other list options like grid
+                        separatorBuilder: (context, index) => Divider(
+                          color: Theme.of(context).accentColor.withAlpha(45),
+                        ),
+                        itemBuilder: (context, index) => SuperheroTile(
+                          _filteredSuperHeroes[index],
+                        ),
+                        itemCount: _filteredSuperHeroes.length,
                       ),
-                      // TODO: Fix incorrect images when searching
-                      itemBuilder: (context, index) => SuperheroTile(
-                        _filteredSuperHeroes[index],
-                      ),
-                      itemCount: _filteredSuperHeroes.length,
-                    ),
+          ),
         ),
       );
 }

@@ -7,7 +7,12 @@ class BottomSheetSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.only(
+          left: 10,
+          top: 10,
+          right: 10,
+          bottom: 30,
+        ),
         color: Theme.of(context).primaryColor.withOpacity(0.5),
         child: TextField(
           controller: searchController,
