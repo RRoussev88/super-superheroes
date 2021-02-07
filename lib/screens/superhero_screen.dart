@@ -6,7 +6,7 @@ import '../UI/description_card.dart';
 class SuperheroScreen extends StatelessWidget {
   final Superhero superHero;
 
-  SuperheroScreen(this.superHero);
+  const SuperheroScreen(this.superHero);
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -15,13 +15,15 @@ class SuperheroScreen extends StatelessWidget {
           builder: (BuildContext ctx) => Stack(
             children: <Widget>[
               Center(
-                // TODO: Create Hero animation if possible
-                child: FadeInImage.assetNetwork(
-                  height: MediaQuery.of(ctx).size.height -
-                      Scaffold.of(ctx).appBarMaxHeight,
-                  placeholder: 'assets/images/superhero-placeholder.png',
-                  image: superHero.images.lg,
-                  fit: BoxFit.fitHeight,
+                child: Hero(
+                  tag: superHero.id,
+                  child: FadeInImage.assetNetwork(
+                    height: MediaQuery.of(ctx).size.height -
+                        Scaffold.of(ctx).appBarMaxHeight,
+                    placeholder: 'assets/images/superhero-placeholder.png',
+                    image: superHero.images.lg,
+                    fit: BoxFit.fitHeight,
+                  ),
                 ),
               ),
               Align(
