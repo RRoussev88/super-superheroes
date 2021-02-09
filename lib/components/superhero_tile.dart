@@ -37,7 +37,26 @@ class SuperheroTile extends StatelessWidget {
             ),
           ),
         ),
-        title: Text(superHero.name),
+        title: Text(
+          superHero.name,
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        subtitle: Row(
+          children: <Widget>[
+            Icon(
+              Icons.movie_filter,
+              size: 22,
+              color: Theme.of(context).textTheme.subtitle2.color,
+            ),
+            SizedBox(width: 2),
+            Flexible(
+              child: Text(
+                superHero.biography.publisher,
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+            ),
+          ],
+        ),
         trailing: IconButton(
           icon: Icon(Icons.favorite_border),
           color: Colors.redAccent,

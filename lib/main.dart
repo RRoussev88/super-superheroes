@@ -22,6 +22,19 @@ class MyApp extends StatelessWidget {
             ),
             textTheme: ButtonTextTheme.accent,
           ),
+          textTheme: TextTheme(
+            headline6: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.black.withAlpha(180),
+            ),
+            subtitle1: TextStyle(color: Colors.black.withAlpha(140)),
+            subtitle2: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              color: Colors.black.withAlpha(140),
+            ),
+          ),
         ),
         home: Home(),
       );

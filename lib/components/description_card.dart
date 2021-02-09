@@ -68,59 +68,60 @@ class _DescriptionCardState extends State<DescriptionCard> {
                   children: [
                     _sectionDivider,
                     const Text('Biography').styleSectionText(context),
-                    Text('Full name: ${widget.superHero.biography.fullName}')
+                    Text('FULL NAME: ${widget.superHero.biography.fullName}')
                         .styleDescriptionText(context),
-                    Text('Alignment: ${widget.superHero.biography.alignment}')
+                    Text('ALIGNMENT: ${widget.superHero.biography.alignment}')
                         .styleDescriptionText(context),
-                    Text('First appearance: ${widget.superHero.biography.firstAppearance}')
+                    Text('FIRST APPEARANCE: ${widget.superHero.biography.firstAppearance}')
                         .styleDescriptionText(context),
-                    Text('Alter egos: ${widget.superHero.biography.alterEgos}')
+                    Text('ALTER EGOS: ${widget.superHero.biography.alterEgos}')
                         .styleDescriptionText(context),
-                    Text('Aliases: ${widget.superHero.biography.aliases.join(', ')}')
+                    Text('ALIASES: ${widget.superHero.biography.aliases.join(', ')}')
                         .styleDescriptionText(context),
-                    Text('Place of birth: ${widget.superHero.biography.placeOfBirth}')
+                    Text('PLACE OF BIRTH: ${widget.superHero.biography.placeOfBirth}')
                         .styleDescriptionText(context),
-                    Text('Publisher: ${widget.superHero.biography.publisher}')
+                    Text('PUBLISHER: ${widget.superHero.biography.publisher}')
                         .styleDescriptionText(context),
                     _sectionDivider,
                     const Text('Appearance').styleSectionText(context),
-                    Text('Gender: ${widget.superHero.appearance.gender}')
+                    Text('GENDER: ${widget.superHero.appearance.gender}')
                         .styleDescriptionText(context),
-                    Text('Race: ${widget.superHero.appearance.race}')
+                    Text('RACE: ${widget.superHero.appearance.race}')
                         .styleDescriptionText(context),
-                    Text('Height: ${widget.superHero.appearance.height[1]}')
+                    Text('HEIGHT: ${widget.superHero.appearance.height[1]}')
                         .styleDescriptionText(context),
-                    Text('Weight: ${widget.superHero.appearance.weight[1]}')
+                    Text('WEIGHT: ${widget.superHero.appearance.weight[1]}')
                         .styleDescriptionText(context),
-                    Text('Eye color: ${widget.superHero.appearance.eyeColor}')
+                    Text('EYE COLOR: ${widget.superHero.appearance.eyeColor}')
                         .styleDescriptionText(context),
-                    Text('Hair color: ${widget.superHero.appearance.hairColor}')
+                    Text('HAIR COLOR: ${widget.superHero.appearance.hairColor}')
                         .styleDescriptionText(context),
                     _sectionDivider,
+                    // TODO: Put number bars for powerstats
                     const Text('Powerstats').styleSectionText(context),
-                    Text('Intelligence: ${widget.superHero.powerstats.intelligence}')
+                    Text('INTELLIGENCE: ${widget.superHero.powerstats.intelligence}')
                         .styleDescriptionText(context),
-                    Text('Strength: ${widget.superHero.powerstats.strength}')
+                    Text('STRENGTH: ${widget.superHero.powerstats.strength}')
                         .styleDescriptionText(context),
-                    Text('Speed: ${widget.superHero.powerstats.speed}')
+                    Text('SPEED: ${widget.superHero.powerstats.speed}')
                         .styleDescriptionText(context),
-                    Text('Durability: ${widget.superHero.powerstats.durability}')
+                    Text('DURABILITY: ${widget.superHero.powerstats.durability}')
                         .styleDescriptionText(context),
-                    Text('Power: ${widget.superHero.powerstats.power}')
+                    Text('POWER: ${widget.superHero.powerstats.power}')
                         .styleDescriptionText(context),
-                    Text('Combat: ${widget.superHero.powerstats.combat}')
+                    Text('COMBAT: ${widget.superHero.powerstats.combat}')
                         .styleDescriptionText(context),
                     _sectionDivider,
                     const Text('Work').styleSectionText(context),
-                    Text('Occupation: ${widget.superHero.work.occupation}')
+                    Text('OCCUPATION: ${widget.superHero.work.occupation}')
                         .styleDescriptionText(context),
-                    Text('Base: ${widget.superHero.work.base}')
+                    Text('BASE: ${widget.superHero.work.base}')
                         .styleDescriptionText(context),
                     _sectionDivider,
                     const Text('Connections').styleSectionText(context),
-                    Text('Group affiliation: ${widget.superHero.connections.groupAffiliation}')
+                    Text('GROUP AFFILIATION: ${widget.superHero.connections.groupAffiliation}')
                         .styleDescriptionText(context),
-                    Text('Relatives: ${widget.superHero.connections.relatives}')
+                    Text('RELATIVES: ${widget.superHero.connections.relatives}')
                         .styleDescriptionText(context),
                   ],
                 ),

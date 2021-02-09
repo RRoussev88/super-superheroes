@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 import '../models/superhero/Superhero.dart';
-import '../UI/superhero_tile.dart';
-import '../UI/bottom_sheet_search.dart';
-import '../UI/error_message.dart';
+import '../components/superhero_tile.dart';
+import '../components/bottom_sheet_search.dart';
+import '../components/error_message.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -148,6 +148,7 @@ class _HomeState extends State<Home> {
                     : ListView.separated(
                         // TODO: Add other list options like grid
                         separatorBuilder: (context, index) => Divider(
+                          thickness: 4,
                           color: Theme.of(context).accentColor.withAlpha(45),
                         ),
                         itemBuilder: (context, index) => SuperheroTile(

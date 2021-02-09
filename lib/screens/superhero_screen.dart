@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/superhero/Superhero.dart';
-import '../UI/description_card.dart';
+import '../components/description_card.dart';
 
 class SuperheroScreen extends StatelessWidget {
   final Superhero superHero;

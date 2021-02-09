@@ -5,6 +5,7 @@ extension DesctiptionText on Text {
         this.data,
         style: TextStyle(
           fontSize: 16,
+          height: 1.5,
           color: Theme.of(context).accentColor,
         ),
       );

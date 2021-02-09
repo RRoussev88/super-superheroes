@@ -15,6 +15,7 @@ class BottomSheetSearch extends StatelessWidget {
         ),
         color: Theme.of(context).primaryColor.withOpacity(0.5),
         child: TextField(
+          autofocus: true,
           controller: searchController,
           decoration: InputDecoration(
             labelText: "Superhero name",
