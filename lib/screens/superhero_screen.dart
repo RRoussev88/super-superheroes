@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/superhero/Superhero.dart';
+import '../components/favorite_button.dart';
 import '../components/description_card.dart';
 
 class SuperheroScreen extends StatelessWidget {
@@ -10,7 +11,15 @@ class SuperheroScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: Text(superHero.name)),
+        appBar: AppBar(
+          title: Text(superHero.name),
+          actions: [
+            FavoriteButton(false),
+            SizedBox(
+              width: 15,
+            )
+          ],
+        ),
         body: Builder(
           builder: (BuildContext ctx) => Stack(
             children: <Widget>[

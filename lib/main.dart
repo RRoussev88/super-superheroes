@@ -12,7 +12,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.teal,
           primaryColor: Colors.teal[500],
+          primaryColorLight: Colors.teal[300],
+          primaryColorDark: Colors.teal[800],
+          secondaryHeaderColor: Colors.teal[50],
           accentColor: const Color(0xFF2A3542),
+          dividerColor: const Color(0xFF2A3542).withAlpha(45),
           visualDensity: VisualDensity.adaptivePlatformDensity,
           buttonTheme: ButtonThemeData(
             height: 45,
@@ -23,8 +27,13 @@ class MyApp extends StatelessWidget {
             textTheme: ButtonTextTheme.accent,
           ),
           textTheme: TextTheme(
-            headline6: TextStyle(
+            headline5: TextStyle(
               fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.black.withAlpha(180),
+            ),
+            headline6: TextStyle(
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.black.withAlpha(180),
             ),

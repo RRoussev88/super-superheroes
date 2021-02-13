@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'favorite_button.dart';
 import '../models/superhero/Superhero.dart';
 import '../screens/superhero_screen.dart';
 
@@ -30,16 +31,22 @@ class SuperheroTile extends StatelessWidget {
               builder: (context) => SuperheroScreen(superHero)));
         },
         leading: CircleAvatar(
-          child: ClipOval(
-            child: Hero(
-              tag: superHero.id,
-              child: _getAvatarImage(),
+          backgroundColor: Theme.of(context).primaryColorLight,
+          radius: 30,
+          child: CircleAvatar(
+            radius: 24,
+            child: ClipOval(
+              child: Hero(
+                tag: superHero.id,
+                child: _getAvatarImage(),
+              ),
             ),
           ),
         ),
         title: Text(
           superHero.name,
-          style: Theme.of(context).textTheme.headline6,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.headline5,
         ),
         subtitle: Row(
           children: <Widget>[
@@ -52,16 +59,12 @@ class SuperheroTile extends StatelessWidget {
             Flexible(
               child: Text(
                 superHero.biography.publisher,
+                overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.subtitle2,
               ),
             ),
           ],
         ),
-        trailing: IconButton(
-          icon: Icon(Icons.favorite_border),
-          color: Colors.redAccent,
-          // TODO: implement favorites functionallity using shared prefs
-          onPressed: () {},
-        ),
+        trailing: FavoriteButton(false),
       );
 }

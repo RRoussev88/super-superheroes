@@ -7,9 +7,10 @@ import '../models/superhero/Superhero.dart';
 import '../components/superhero_tile.dart';
 import '../components/bottom_sheet_search.dart';
 import '../components/error_message.dart';
+import '../components/superhero_grid_tile.dart';
 
 class Home extends StatefulWidget {
-  Home({Key key}) : super(key: key);
+  const Home({Key key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -28,6 +29,7 @@ class _HomeState extends State<Home> {
   List<Superhero> _filteredSuperHeroes = [];
   bool _isLodaingHeroes = false;
   bool _hasError = false;
+  bool _showGrid = false;
   String _errorMessage = 'There was an error while loading superheroes';
 
   Future<void> _loadHeroes() async {
@@ -128,6 +130,15 @@ class _HomeState extends State<Home> {
           title: const Text('Super Superheroes'),
           actions: [
             IconButton(
+              icon: Icon(_showGrid ? Icons.list : Icons.grid_on),
+              onPressed: () {
+                // TODO: Keep that selection in shared preferences
+                setState(() {
+                  _showGrid = !_showGrid;
+                });
+              },
+            ),
+            IconButton(
               icon: const Icon(Icons.search),
               onPressed: _showBottomSheetCallback,
             ),
@@ -145,17 +156,33 @@ class _HomeState extends State<Home> {
                         message: _errorMessage,
                         reload: _loadHeroes,
                       )
-                    : ListView.separated(
-                        // TODO: Add other list options like grid
-                        separatorBuilder: (context, index) => Divider(
-                          thickness: 4,
-                          color: Theme.of(context).accentColor.withAlpha(45),
-                        ),
-                        itemBuilder: (context, index) => SuperheroTile(
-                          _filteredSuperHeroes[index],
-                        ),
-                        itemCount: _filteredSuperHeroes.length,
-                      ),
+                    : _showGrid
+                        ? GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount:
+                                  MediaQuery.of(context).orientation ==
+                                          Orientation.portrait
+                                      ? 2
+                                      : 3,
+                              crossAxisSpacing: 4,
+                              mainAxisSpacing: 4,
+                              childAspectRatio: 0.75,
+                            ),
+                            itemBuilder: (context, index) =>
+                                SuperheroGridTile(_filteredSuperHeroes[index]),
+                            itemCount: _filteredSuperHeroes.length,
+                          )
+                        : ListView.separated(
+                            separatorBuilder: (context, index) => Divider(
+                              thickness: 4,
+                              color: Theme.of(context).dividerColor,
+                            ),
+                            itemBuilder: (context, index) => SuperheroTile(
+                              _filteredSuperHeroes[index],
+                            ),
+                            itemCount: _filteredSuperHeroes.length,
+                          ),
           ),
         ),
       );
