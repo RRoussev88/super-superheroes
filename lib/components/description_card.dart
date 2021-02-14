@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/superhero/Superhero.dart';
 import '../extensions/description_text_extension.dart';
+import 'stats_indicator.dart';
 
 class DescriptionCard extends StatefulWidget {
   final Superhero superHero;
@@ -97,20 +98,32 @@ class _DescriptionCardState extends State<DescriptionCard> {
                     Text('HAIR COLOR: ${widget.superHero.appearance.hairColor}')
                         .styleDescriptionText(context),
                     _sectionDivider,
-                    // TODO: Put number bars for powerstats
                     const Text('Powerstats').styleSectionText(context),
-                    Text('INTELLIGENCE: ${widget.superHero.powerstats.intelligence}')
-                        .styleDescriptionText(context),
-                    Text('STRENGTH: ${widget.superHero.powerstats.strength}')
-                        .styleDescriptionText(context),
-                    Text('SPEED: ${widget.superHero.powerstats.speed}')
-                        .styleDescriptionText(context),
-                    Text('DURABILITY: ${widget.superHero.powerstats.durability}')
-                        .styleDescriptionText(context),
-                    Text('POWER: ${widget.superHero.powerstats.power}')
-                        .styleDescriptionText(context),
-                    Text('COMBAT: ${widget.superHero.powerstats.combat}')
-                        .styleDescriptionText(context),
+                    StatsIndicator(
+                      statName: 'Intelligence',
+                      value:
+                          widget.superHero.powerstats.intelligence.toDouble(),
+                    ),
+                    StatsIndicator(
+                      statName: 'Strength',
+                      value: widget.superHero.powerstats.strength.toDouble(),
+                    ),
+                    StatsIndicator(
+                      statName: 'Speed',
+                      value: widget.superHero.powerstats.speed.toDouble(),
+                    ),
+                    StatsIndicator(
+                      statName: 'Durability',
+                      value: widget.superHero.powerstats.durability.toDouble(),
+                    ),
+                    StatsIndicator(
+                      statName: 'Power',
+                      value: widget.superHero.powerstats.power.toDouble(),
+                    ),
+                    StatsIndicator(
+                      statName: 'Combat',
+                      value: widget.superHero.powerstats.combat.toDouble(),
+                    ),
                     _sectionDivider,
                     const Text('Work').styleSectionText(context),
                     Text('OCCUPATION: ${widget.superHero.work.occupation}')
