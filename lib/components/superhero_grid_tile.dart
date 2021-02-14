@@ -43,14 +43,16 @@ class SuperheroGridTile extends StatelessWidget {
                                 bool wasSynchronouslyLoaded,
                               ) =>
                                   frame == null
-                                      ? Text(
-                                          superHero.name
-                                              .split(' ')
-                                              .map((word) => word[0])
-                                              .join(),
-                                          style: TextStyle(
-                                            fontSize: 42,
-                                            color: Colors.white,
+                                      ? Center(
+                                          child: Text(
+                                            superHero.name
+                                                .split(' ')
+                                                .map((word) => word[0])
+                                                .join(),
+                                            style: TextStyle(
+                                              fontSize: 42,
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         )
                                       : child,
@@ -92,7 +94,7 @@ class SuperheroGridTile extends StatelessWidget {
                                 SizedBox(width: 2),
                                 Flexible(
                                   child: Text(
-                                    superHero.biography.publisher,
+                                    superHero.biography.publisher ?? '-',
                                     overflow: TextOverflow.ellipsis,
                                     style:
                                         Theme.of(context).textTheme.subtitle2,

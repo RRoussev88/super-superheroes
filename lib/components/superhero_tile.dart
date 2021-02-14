@@ -9,21 +9,6 @@ class SuperheroTile extends StatelessWidget {
 
   SuperheroTile(this.superHero);
 
-  Image _getAvatarImage() => Image.network(
-        superHero.images.xs,
-        frameBuilder: (
-          BuildContext context,
-          Widget child,
-          int frame,
-          bool wasSynchronouslyLoaded,
-        ) =>
-            frame == null
-                ? Text(superHero.name.split(' ').map((word) => word[0]).join())
-                : child,
-        fit: BoxFit.cover,
-        width: double.infinity,
-      );
-
   @override
   Widget build(BuildContext context) => ListTile(
         onTap: () {
@@ -38,7 +23,23 @@ class SuperheroTile extends StatelessWidget {
             child: ClipOval(
               child: Hero(
                 tag: superHero.id,
-                child: _getAvatarImage(),
+                child: Image.network(
+                  superHero.images.xs,
+                  frameBuilder: (
+                    BuildContext context,
+                    Widget child,
+                    int frame,
+                    bool wasSynchronouslyLoaded,
+                  ) =>
+                      frame == null
+                          ? Text(superHero.name
+                              .split(' ')
+                              .map((word) => word[0])
+                              .join())
+                          : child,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
               ),
             ),
           ),
@@ -58,7 +59,7 @@ class SuperheroTile extends StatelessWidget {
             SizedBox(width: 2),
             Flexible(
               child: Text(
-                superHero.biography.publisher,
+                superHero.biography.publisher ?? '-',
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.subtitle2,
               ),

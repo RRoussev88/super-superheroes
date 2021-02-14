@@ -24,6 +24,9 @@ class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _sheetKey = GlobalKey();
 
+  ScrollController _scrollListController;
+  ScrollController _scrollGridController;
+
   VoidCallback _showBottomSheetCallback;
   double _heightFactor = 1.0;
   List<Superhero> _superHeroes = [];
@@ -31,7 +34,9 @@ class _HomeState extends State<Home> {
   bool _isLodaingHeroes = false;
   bool _hasError = false;
   bool _showGrid = false;
+  bool _scrolledGrid = true;
   String _errorMessage = AppConstants.EM_LOADING_ERROR;
+  double _scrolledPercentage = 0;
 
   Future<void> _loadHeroes() async {
     if (_superHeroes.length > 0) {
@@ -111,9 +116,19 @@ class _HomeState extends State<Home> {
     });
   }
 
+  // Use this method to set all the other settings saved in SP
+  // like dark/light theme, translation language, custom search filters, etc.
   void _setSavedSettings() {
     _prefs.then((SharedPreferences prefs) {
       _showGrid = prefs.getBool(AppConstants.SP_SHOW_GRID) ?? false;
+    });
+  }
+
+  void setScrolledPercentage(ScrollController controller) {
+    double scrolledPercentage = (controller.position.pixels * 100) /
+        controller.position.maxScrollExtent;
+    setState(() {
+      _scrolledPercentage = scrolledPercentage;
     });
   }
 
@@ -121,6 +136,12 @@ class _HomeState extends State<Home> {
   initState() {
     super.initState();
     _setSavedSettings();
+    _scrollListController = ScrollController();
+    _scrollListController
+        .addListener(() => setScrolledPercentage(_scrollListController));
+    _scrollGridController = ScrollController();
+    _scrollGridController
+        .addListener(() => setScrolledPercentage(_scrollGridController));
     _searchController.addListener(_filterHeroes);
     _showBottomSheetCallback = _showBottomSheet;
     _loadHeroes();
@@ -129,77 +150,102 @@ class _HomeState extends State<Home> {
   @override
   void dispose() {
     super.dispose();
+    _scrollListController.dispose();
+    _scrollGridController.dispose();
     _searchController.dispose();
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          title: const Text(AppConstants.APP_TITLE),
-          actions: [
-            IconButton(
-              icon: Icon(_showGrid ? Icons.list : Icons.grid_on),
-              onPressed: () {
-                _prefs.then((SharedPreferences prefs) {
-                  prefs
-                      .setBool(AppConstants.SP_SHOW_GRID, !_showGrid)
-                      .then((bool success) {
-                    if (success) {
-                      setState(() {
-                        _showGrid = !_showGrid;
-                      });
-                    }
-                  });
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollListController.hasClients && !_scrolledGrid) {
+        _scrollListController.jumpTo(_scrolledPercentage *
+            _scrollListController.position.maxScrollExtent /
+            100);
+        setState(() {
+          _scrolledGrid = true;
+        });
+      }
+      if (_scrollGridController.hasClients && _scrolledGrid) {
+        _scrollGridController.jumpTo(_scrolledPercentage *
+            _scrollGridController.position.maxScrollExtent /
+            100);
+        setState(() {
+          _scrolledGrid = false;
+        });
+      }
+    });
+
+    return Scaffold(
+      key: _scaffoldKey,
+      appBar: AppBar(
+        title: const Text(AppConstants.APP_TITLE),
+        actions: [
+          IconButton(
+            icon: Icon(_showGrid ? Icons.list : Icons.grid_on),
+            onPressed: () {
+              _prefs.then((SharedPreferences prefs) {
+                prefs
+                    .setBool(AppConstants.SP_SHOW_GRID, !_showGrid)
+                    .then((bool success) {
+                  if (success) {
+                    setState(() {
+                      _showGrid = !_showGrid;
+                    });
+                  }
                 });
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: _showBottomSheetCallback,
-            ),
-          ],
-        ),
-        body: SafeArea(
-          child: FractionallySizedBox(
-            heightFactor: _heightFactor,
-            child: _isLodaingHeroes
-                ? const Center(
-                    child: const CircularProgressIndicator(),
-                  )
-                : _hasError
-                    ? ErrorMessage(
-                        message: _errorMessage,
-                        reload: _loadHeroes,
-                      )
-                    : _showGrid
-                        ? GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount:
-                                  MediaQuery.of(context).orientation ==
-                                          Orientation.portrait
-                                      ? 2
-                                      : 3,
-                              crossAxisSpacing: 4,
-                              mainAxisSpacing: 4,
-                              childAspectRatio: 0.75,
-                            ),
-                            itemBuilder: (context, index) =>
-                                SuperheroGridTile(_filteredSuperHeroes[index]),
-                            itemCount: _filteredSuperHeroes.length,
-                          )
-                        : ListView.separated(
-                            separatorBuilder: (context, index) => Divider(
-                              thickness: 4,
-                              color: Theme.of(context).dividerColor,
-                            ),
-                            itemBuilder: (context, index) => SuperheroTile(
-                              _filteredSuperHeroes[index],
-                            ),
-                            itemCount: _filteredSuperHeroes.length,
-                          ),
+              });
+            },
           ),
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: _showBottomSheetCallback,
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: FractionallySizedBox(
+          heightFactor: _heightFactor,
+          child: _isLodaingHeroes
+              ? const Center(
+                  child: const CircularProgressIndicator(),
+                )
+              : _hasError
+                  ? ErrorMessage(
+                      message: _errorMessage,
+                      reload: _loadHeroes,
+                    )
+                  : _showGrid
+                      ? GridView.builder(
+                          controller: _scrollGridController,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount:
+                                MediaQuery.of(context).orientation ==
+                                        Orientation.portrait
+                                    ? 2
+                                    : 3,
+                            crossAxisSpacing: 4,
+                            mainAxisSpacing: 4,
+                            childAspectRatio: 0.75,
+                          ),
+                          itemBuilder: (context, index) =>
+                              SuperheroGridTile(_filteredSuperHeroes[index]),
+                          itemCount: _filteredSuperHeroes.length,
+                        )
+                      : ListView.separated(
+                          controller: _scrollListController,
+                          separatorBuilder: (context, index) => Divider(
+                            thickness: 4,
+                            color: Theme.of(context).dividerColor,
+                          ),
+                          itemBuilder: (context, index) => SuperheroTile(
+                            _filteredSuperHeroes[index],
+                          ),
+                          itemCount: _filteredSuperHeroes.length,
+                        ),
         ),
-      );
+      ),
+    );
+  }
 }
