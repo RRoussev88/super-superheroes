@@ -2,7 +2,9 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utils/constants.dart' as AppConstants;
 import '../models/superhero/Superhero.dart';
 import '../components/superhero_tile.dart';
 import '../components/bottom_sheet_search.dart';
@@ -17,8 +19,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  static const String _baseUrl =
-      'https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api';
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final TextEditingController _searchController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _sheetKey = GlobalKey();
@@ -30,7 +31,7 @@ class _HomeState extends State<Home> {
   bool _isLodaingHeroes = false;
   bool _hasError = false;
   bool _showGrid = false;
-  String _errorMessage = 'There was an error while loading superheroes';
+  String _errorMessage = AppConstants.EM_LOADING_ERROR;
 
   Future<void> _loadHeroes() async {
     if (_superHeroes.length > 0) {
@@ -40,7 +41,8 @@ class _HomeState extends State<Home> {
       _isLodaingHeroes = true;
     });
     try {
-      http.Response response = await http.get("$_baseUrl/all.json");
+      http.Response response =
+          await http.get("${AppConstants.BASE_URL}/all.json");
       if (response.statusCode == 200) {
         List<dynamic> decodedHeroes = jsonDecode(response.body);
         if (decodedHeroes.length > 0) {
@@ -58,7 +60,7 @@ class _HomeState extends State<Home> {
     } on SocketException catch (_) {
       setState(() {
         _hasError = true;
-        _errorMessage = 'No Internet connection';
+        _errorMessage = AppConstants.EM_NO_INTERNET;
       });
     } catch (error) {
       setState(() {
@@ -109,9 +111,16 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void _setSavedSettings() {
+    _prefs.then((SharedPreferences prefs) {
+      _showGrid = prefs.getBool(AppConstants.SP_SHOW_GRID) ?? false;
+    });
+  }
+
   @override
   initState() {
     super.initState();
+    _setSavedSettings();
     _searchController.addListener(_filterHeroes);
     _showBottomSheetCallback = _showBottomSheet;
     _loadHeroes();
@@ -127,14 +136,21 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) => Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: const Text('Super Superheroes'),
+          title: const Text(AppConstants.APP_TITLE),
           actions: [
             IconButton(
               icon: Icon(_showGrid ? Icons.list : Icons.grid_on),
               onPressed: () {
-                // TODO: Keep that selection in shared preferences
-                setState(() {
-                  _showGrid = !_showGrid;
+                _prefs.then((SharedPreferences prefs) {
+                  prefs
+                      .setBool(AppConstants.SP_SHOW_GRID, !_showGrid)
+                      .then((bool success) {
+                    if (success) {
+                      setState(() {
+                        _showGrid = !_showGrid;
+                      });
+                    }
+                  });
                 });
               },
             ),
