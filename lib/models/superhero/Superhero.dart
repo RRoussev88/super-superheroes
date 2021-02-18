@@ -17,6 +17,7 @@ class Superhero {
   final Work work;
   final Connections connections;
   final Images images;
+  final bool isFavorite;
 
   const Superhero({
     @required this.id,
@@ -28,6 +29,7 @@ class Superhero {
     @required this.work,
     @required this.connections,
     @required this.images,
+    this.isFavorite,
   });
 
   factory Superhero.fromJson(Map<String, dynamic> json) => Superhero(
@@ -40,6 +42,7 @@ class Superhero {
         work: Work.fromJson(json['work']),
         connections: Connections.fromJson(json['connections']),
         images: Images.fromJson(json['images']),
+        isFavorite: json['is_favorite'] != null && json['is_favorite'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -52,5 +55,6 @@ class Superhero {
         'work': work.toJson(),
         'connections': connections.toJson(),
         'images': images.toJson(),
+        'is_favorite': isFavorite,
       };
 }

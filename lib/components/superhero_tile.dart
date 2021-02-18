@@ -66,6 +66,6 @@ class SuperheroTile extends StatelessWidget {
             ),
           ],
         ),
-        trailing: FavoriteButton(false),
+        trailing: FavoriteButton(superHero.id, superHero.isFavorite),
       );
 }

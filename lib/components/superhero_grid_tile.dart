@@ -62,7 +62,10 @@ class SuperheroGridTile extends StatelessWidget {
                           ),
                           Align(
                             alignment: Alignment.topRight,
-                            child: FavoriteButton(false),
+                            child: FavoriteButton(
+                              superHero.id,
+                              superHero.isFavorite,
+                            ),
                           ),
                         ],
                       ),

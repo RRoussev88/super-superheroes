@@ -14,10 +14,10 @@ class SuperheroScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(superHero.name),
           actions: [
-            FavoriteButton(false),
-            SizedBox(
-              width: 15,
-            )
+            Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: FavoriteButton(superHero.id, superHero.isFavorite),
+            ),
           ],
         ),
         body: Builder(

@@ -10,6 +10,7 @@ import '../components/superhero_tile.dart';
 import '../components/bottom_sheet_search.dart';
 import '../components/error_message.dart';
 import '../components/superhero_grid_tile.dart';
+import '../utils/database.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
@@ -51,9 +52,21 @@ class _HomeState extends State<Home> {
       if (response.statusCode == 200) {
         List<dynamic> decodedHeroes = jsonDecode(response.body);
         if (decodedHeroes.length > 0) {
+          List<Map<String, dynamic>> favorites =
+              await DBProvider.db.getAllFavorites();
           setState(() {
-            _superHeroes =
-                decodedHeroes.map((hero) => Superhero.fromJson(hero)).toList();
+            _superHeroes = decodedHeroes.map((hero) {
+              bool isFavoriteHero = false;
+              if (favorites.length > 0) {
+                isFavoriteHero = favorites.firstWhere(
+                      (fav) => fav[AppConstants.DB_COLUMN_ID] == hero['id'],
+                      orElse: () => null,
+                    ) !=
+                    null;
+              }
+              hero['is_favorite'] = isFavoriteHero;
+              return Superhero.fromJson(hero);
+            }).toList();
             _filteredSuperHeroes = [..._superHeroes];
           });
         }

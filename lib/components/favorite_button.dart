@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../utils/database.dart';
+
 class FavoriteButton extends StatefulWidget {
   final bool isChecked;
+  final int id;
 
-  const FavoriteButton(this.isChecked);
+  const FavoriteButton(this.id, this.isChecked);
 
   @override
   _FavoriteButtonState createState() => _FavoriteButtonState();
@@ -29,11 +32,14 @@ class _FavoriteButtonState extends State<FavoriteButton> {
         child: IconButton(
           icon: Icon(_isChecked ? Icons.favorite : Icons.favorite_border),
           color: Colors.redAccent,
-          // TODO: implement favorites functionallity using shared prefs
-          onPressed: () {
-            setState(() {
-              _isChecked = !_isChecked;
-            });
+          onPressed: () async {
+            int result =
+                await DBProvider.db.newFavorite(widget.id, !_isChecked);
+            if (result == widget.id) {
+              setState(() {
+                _isChecked = !_isChecked;
+              });
+            }
           },
         ),
       );
