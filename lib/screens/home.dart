@@ -11,8 +11,6 @@ import '../components/superhero_grid_tile.dart';
 import '../components/superhero_tile.dart';
 import '../models/superhero/Superhero.dart';
 import '../utils/constants.dart' as AppConstants;
-import '../utils/database.dart';
-import '../utils/favorites_bloc.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
@@ -26,7 +24,6 @@ class _HomeState extends State<Home> {
   final TextEditingController _searchController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _sheetKey = GlobalKey();
-  final FavoritesBloc _bloc = FavoritesBloc();
 
   ScrollController _scrollListController;
   ScrollController _scrollGridController;
@@ -35,7 +32,6 @@ class _HomeState extends State<Home> {
   double _heightFactor = 1.0;
   List<Superhero> _superHeroes = [];
   List<Superhero> _filteredSuperHeroes = [];
-  List<Map<String, dynamic>> _initialFavorites = [];
   bool _isLodaingHeroes = false;
   bool _hasError = false;
   bool _showGrid = false;
@@ -51,15 +47,12 @@ class _HomeState extends State<Home> {
       _isLodaingHeroes = true;
     });
     try {
-      List<Map<String, dynamic>> initialFavorites =
-          await DBProvider.db.getAllFavorites();
       http.Response response =
           await http.get("${AppConstants.BASE_URL}/all.json");
       if (response.statusCode == 200) {
         List<dynamic> decodedHeroes = jsonDecode(response.body);
         if (decodedHeroes.length > 0) {
           setState(() {
-            _initialFavorites = initialFavorites;
             _superHeroes =
                 decodedHeroes.map((hero) => Superhero.fromJson(hero)).toList();
             _filteredSuperHeroes = [..._superHeroes];
@@ -140,10 +133,6 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void toggleLike(int id, bool isLiked) {
-    _bloc.addFavorite(id, !isLiked);
-  }
-
   @override
   initState() {
     super.initState();
@@ -165,7 +154,6 @@ class _HomeState extends State<Home> {
     _scrollListController.dispose();
     _scrollGridController.dispose();
     _searchController.dispose();
-    _bloc.dispose();
   }
 
   @override
@@ -229,60 +217,34 @@ class _HomeState extends State<Home> {
                       message: _errorMessage,
                       reload: _loadHeroes,
                     )
-                  : StreamBuilder<List<Map<String, dynamic>>>(
-                      initialData: _initialFavorites,
-                      stream: _bloc.favorites,
-                      builder: (
-                        BuildContext ctx,
-                        AsyncSnapshot<List<Map<String, dynamic>>> snapshot,
-                      ) {
-                        List<Map<String, dynamic>> favorites =
-                            snapshot.hasData ? snapshot.data : [];
-
-                        bool checkIsFav(int id) =>
-                            favorites.isNotEmpty &&
-                            favorites.any((item) =>
-                                item[AppConstants.DB_COLUMN_ID] == id &&
-                                item[AppConstants.DB_COLUMN_IS_FAV] == 1);
-
-                        return _showGrid
-                            ? GridView.builder(
-                                controller: _scrollGridController,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount:
-                                      MediaQuery.of(context).orientation ==
-                                              Orientation.portrait
-                                          ? 2
-                                          : 3,
-                                  crossAxisSpacing: 4,
-                                  mainAxisSpacing: 4,
-                                  childAspectRatio: 0.75,
-                                ),
-                                itemBuilder: (ctx, index) => SuperheroGridTile(
-                                  superHero: _filteredSuperHeroes[index],
-                                  toggleLike: toggleLike,
-                                  isFavorite: checkIsFav(
-                                      _filteredSuperHeroes[index].id),
-                                ),
-                                itemCount: _filteredSuperHeroes.length,
-                              )
-                            : ListView.separated(
-                                controller: _scrollListController,
-                                separatorBuilder: (context, index) => Divider(
-                                  thickness: 4,
-                                  color: Theme.of(context).dividerColor,
-                                ),
-                                itemBuilder: (ctx, index) => SuperheroTile(
-                                  superHero: _filteredSuperHeroes[index],
-                                  toggleLike: toggleLike,
-                                  isFavorite: checkIsFav(
-                                      _filteredSuperHeroes[index].id),
-                                ),
-                                itemCount: _filteredSuperHeroes.length,
-                              );
-                      },
-                    ),
+                  : _showGrid
+                      ? GridView.builder(
+                          controller: _scrollGridController,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount:
+                                MediaQuery.of(context).orientation ==
+                                        Orientation.portrait
+                                    ? 2
+                                    : 3,
+                            crossAxisSpacing: 4,
+                            mainAxisSpacing: 4,
+                            childAspectRatio: 0.75,
+                          ),
+                          itemBuilder: (ctx, index) =>
+                              SuperheroGridTile(_filteredSuperHeroes[index]),
+                          itemCount: _filteredSuperHeroes.length,
+                        )
+                      : ListView.separated(
+                          controller: _scrollListController,
+                          separatorBuilder: (context, index) => Divider(
+                            thickness: 4,
+                            color: Theme.of(context).dividerColor,
+                          ),
+                          itemBuilder: (ctx, index) =>
+                              SuperheroTile(_filteredSuperHeroes[index]),
+                          itemCount: _filteredSuperHeroes.length,
+                        ),
         ),
       ),
     );

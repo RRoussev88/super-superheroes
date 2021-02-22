@@ -5,26 +5,16 @@ import '../screens/superhero_screen.dart';
 import 'favorite_button.dart';
 
 class SuperheroTile extends StatelessWidget {
-  final Function toggleLike;
   final Superhero superHero;
-  final bool isFavorite;
 
-  SuperheroTile({
-    @required this.superHero,
-    @required this.toggleLike,
-    @required this.isFavorite,
-  }) : super(key: ValueKey(superHero.id));
+  SuperheroTile(this.superHero) : super(key: ValueKey(superHero.id));
 
   @override
   Widget build(BuildContext context) => ListTile(
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => SuperheroScreen(
-                superHero: superHero,
-                toggleLike: toggleLike,
-                isFavorite: isFavorite,
-              ),
+              builder: (context) => SuperheroScreen(superHero),
             ),
           );
         },
@@ -79,10 +69,6 @@ class SuperheroTile extends StatelessWidget {
             ),
           ],
         ),
-        trailing: FavoriteButton(
-          id: superHero.id,
-          isFavorite: isFavorite,
-          toggleFavorite: toggleLike,
-        ),
+        trailing: FavoriteButton(superHero.id),
       );
 }

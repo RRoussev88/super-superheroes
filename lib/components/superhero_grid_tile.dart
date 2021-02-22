@@ -7,15 +7,9 @@ import '../screens/superhero_screen.dart';
 import 'favorite_button.dart';
 
 class SuperheroGridTile extends StatelessWidget {
-  final Function toggleLike;
   final Superhero superHero;
-  final bool isFavorite;
 
-  SuperheroGridTile({
-    @required this.superHero,
-    @required this.toggleLike,
-    @required this.isFavorite,
-  }) : super(key: ValueKey(superHero.id));
+  SuperheroGridTile(this.superHero) : super(key: ValueKey(superHero.id));
 
   @override
   Widget build(BuildContext context) => GridTile(
@@ -23,11 +17,7 @@ class SuperheroGridTile extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => SuperheroScreen(
-                  superHero: superHero,
-                  toggleLike: toggleLike,
-                  isFavorite: isFavorite,
-                ),
+                builder: (context) => SuperheroScreen(superHero),
               ),
             );
           },
@@ -75,11 +65,7 @@ class SuperheroGridTile extends StatelessWidget {
                           ),
                           Align(
                             alignment: Alignment.topRight,
-                            child: FavoriteButton(
-                              id: superHero.id,
-                              isFavorite: isFavorite,
-                              toggleFavorite: toggleLike,
-                            ),
+                            child: FavoriteButton(superHero.id),
                           ),
                         ],
                       ),
