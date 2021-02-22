@@ -1,46 +1,30 @@
 import 'package:flutter/material.dart';
 
-import '../utils/database.dart';
+import '../utils/favorites_bloc.dart';
 
-class FavoriteButton extends StatefulWidget {
-  final bool isChecked;
+class FavoriteButton extends StatelessWidget {
+  final Function toggleFavorite;
+  final bool isFavorite;
   final int id;
 
-  const FavoriteButton(this.id, this.isChecked);
+  FavoriteButton({
+    @required this.id,
+    @required this.isFavorite,
+    @required this.toggleFavorite,
+  }) : super(key: ValueKey(id));
 
-  @override
-  _FavoriteButtonState createState() => _FavoriteButtonState();
-}
-
-class _FavoriteButtonState extends State<FavoriteButton> {
-  _FavoriteButtonState();
-
-  bool _isChecked;
-
-  @override
-  initState() {
-    super.initState();
-    _isChecked = widget.isChecked;
-  }
+  final FavoritesBloc bloc = FavoritesBloc();
 
   @override
   Widget build(BuildContext context) => PhysicalModel(
         color: Theme.of(context).secondaryHeaderColor,
-        shadowColor: _isChecked ? Colors.redAccent : Colors.black,
+        shadowColor: isFavorite ? Colors.redAccent : Colors.black,
         borderRadius: BorderRadius.circular(24),
-        elevation: _isChecked ? 8 : 4,
+        elevation: isFavorite ? 8 : 4,
         child: IconButton(
-          icon: Icon(_isChecked ? Icons.favorite : Icons.favorite_border),
+          icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
           color: Colors.redAccent,
-          onPressed: () async {
-            int result =
-                await DBProvider.db.newFavorite(widget.id, !_isChecked);
-            if (result == widget.id) {
-              setState(() {
-                _isChecked = !_isChecked;
-              });
-            }
-          },
+          onPressed: () => toggleFavorite(id, isFavorite),
         ),
       );
 }

@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.teal,
           primaryColor: Colors.teal[500],
-          primaryColorLight: Colors.teal[300],
+          primaryColorLight: Colors.teal[100],
           primaryColorDark: Colors.teal[800],
           secondaryHeaderColor: Colors.teal[50],
           accentColor: const Color(0xFF2A3542),
