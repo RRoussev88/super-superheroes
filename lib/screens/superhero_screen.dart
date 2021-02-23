@@ -5,9 +5,10 @@ import '../components/favorite_button.dart';
 import '../models/superhero/Superhero.dart';
 
 class SuperheroScreen extends StatelessWidget {
+  final Key key;
   final Superhero superHero;
 
-  SuperheroScreen(this.superHero) : super(key: ValueKey(superHero.id));
+  SuperheroScreen(this.key, this.superHero) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -16,7 +17,7 @@ class SuperheroScreen extends StatelessWidget {
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 15),
-              child: FavoriteButton(superHero.id),
+              child: FavoriteButton(key, superHero.id),
             ),
           ],
         ),

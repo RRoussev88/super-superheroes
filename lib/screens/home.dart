@@ -10,7 +10,10 @@ import '../components/error_message.dart';
 import '../components/superhero_grid_tile.dart';
 import '../components/superhero_tile.dart';
 import '../models/superhero/Superhero.dart';
+import '../models/Favorite.dart';
 import '../utils/constants.dart' as AppConstants;
+import '../utils/bloc_provider.dart';
+import '../utils/favorites_bloc.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
@@ -36,6 +39,7 @@ class _HomeState extends State<Home> {
   bool _hasError = false;
   bool _showGrid = false;
   bool _scrolledGrid = true;
+  bool _filterFavorites = false;
   String _errorMessage = AppConstants.EM_LOADING_ERROR;
   double _scrolledPercentage = 0;
 
@@ -125,11 +129,29 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void setScrolledPercentage(ScrollController controller) {
+  void _setScrolledPercentage(ScrollController controller) {
     double scrolledPercentage = (controller.position.pixels * 100) /
         controller.position.maxScrollExtent;
     setState(() {
       _scrolledPercentage = scrolledPercentage;
+    });
+  }
+
+  void _toggleShowGrid() {
+    _prefs.then((SharedPreferences prefs) {
+      prefs.setBool(AppConstants.SP_SHOW_GRID, !_showGrid).then((bool success) {
+        if (success) {
+          setState(() {
+            _showGrid = !_showGrid;
+          });
+        }
+      });
+    });
+  }
+
+  void _toggleFilterFavorites() {
+    setState(() {
+      _filterFavorites = !_filterFavorites;
     });
   }
 
@@ -139,10 +161,10 @@ class _HomeState extends State<Home> {
     _setSavedSettings();
     _scrollListController = ScrollController();
     _scrollListController
-        .addListener(() => setScrolledPercentage(_scrollListController));
+        .addListener(() => _setScrolledPercentage(_scrollListController));
     _scrollGridController = ScrollController();
     _scrollGridController
-        .addListener(() => setScrolledPercentage(_scrollGridController));
+        .addListener(() => _setScrolledPercentage(_scrollGridController));
     _searchController.addListener(_filterHeroes);
     _showBottomSheetCallback = _showBottomSheet;
     _loadHeroes();
@@ -158,6 +180,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<FavoritesBloc>(context).getFavorites();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollListController.hasClients && !_scrolledGrid) {
         _scrollListController.jumpTo(_scrolledPercentage *
@@ -186,20 +209,13 @@ class _HomeState extends State<Home> {
         title: const Text(AppConstants.APP_TITLE),
         actions: [
           IconButton(
+            icon:
+                Icon(_filterFavorites ? Icons.favorite : Icons.favorite_border),
+            onPressed: _toggleFilterFavorites,
+          ),
+          IconButton(
             icon: Icon(_showGrid ? Icons.list : Icons.grid_on),
-            onPressed: () {
-              _prefs.then((SharedPreferences prefs) {
-                prefs
-                    .setBool(AppConstants.SP_SHOW_GRID, !_showGrid)
-                    .then((bool success) {
-                  if (success) {
-                    setState(() {
-                      _showGrid = !_showGrid;
-                    });
-                  }
-                });
-              });
-            },
+            onPressed: _toggleShowGrid,
           ),
           IconButton(
             icon: const Icon(Icons.search),
@@ -217,34 +233,51 @@ class _HomeState extends State<Home> {
                       message: _errorMessage,
                       reload: _loadHeroes,
                     )
-                  : _showGrid
-                      ? GridView.builder(
-                          controller: _scrollGridController,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount:
-                                MediaQuery.of(context).orientation ==
-                                        Orientation.portrait
-                                    ? 2
-                                    : 3,
-                            crossAxisSpacing: 4,
-                            mainAxisSpacing: 4,
-                            childAspectRatio: 0.75,
-                          ),
-                          itemBuilder: (ctx, index) =>
-                              SuperheroGridTile(_filteredSuperHeroes[index]),
-                          itemCount: _filteredSuperHeroes.length,
-                        )
-                      : ListView.separated(
-                          controller: _scrollListController,
-                          separatorBuilder: (context, index) => Divider(
-                            thickness: 4,
-                            color: Theme.of(context).dividerColor,
-                          ),
-                          itemBuilder: (ctx, index) =>
-                              SuperheroTile(_filteredSuperHeroes[index]),
-                          itemCount: _filteredSuperHeroes.length,
-                        ),
+                  : StreamBuilder<List<Favorite>>(
+                      stream: BlocProvider.of<FavoritesBloc>(context).favorites,
+                      builder: (context, snapshot) {
+                        final List<Superhero> heroesToShow =
+                            snapshot.hasData && _filterFavorites
+                                ? _filteredSuperHeroes
+                                    .where((hero) => snapshot.data
+                                        .map((fav) => fav.id)
+                                        .contains(hero.id))
+                                    .toList()
+                                : _filteredSuperHeroes;
+
+                        return _showGrid
+                            ? GridView.builder(
+                                controller: _scrollGridController,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount:
+                                      MediaQuery.of(context).orientation ==
+                                              Orientation.portrait
+                                          ? 2
+                                          : 3,
+                                  crossAxisSpacing: 4,
+                                  mainAxisSpacing: 4,
+                                  childAspectRatio: 0.75,
+                                ),
+                                itemBuilder: (ctx, index) => SuperheroGridTile(
+                                  ValueKey(heroesToShow[index].id),
+                                  heroesToShow[index],
+                                ),
+                                itemCount: heroesToShow.length,
+                              )
+                            : ListView.separated(
+                                controller: _scrollListController,
+                                separatorBuilder: (context, index) => Divider(
+                                  thickness: 4,
+                                  color: Theme.of(context).dividerColor,
+                                ),
+                                itemBuilder: (ctx, index) => SuperheroTile(
+                                  ValueKey(heroesToShow[index].id),
+                                  heroesToShow[index],
+                                ),
+                                itemCount: heroesToShow.length,
+                              );
+                      }),
         ),
       ),
     );
