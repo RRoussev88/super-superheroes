@@ -3,12 +3,20 @@ import 'package:flutter/material.dart';
 import '../components/description_card.dart';
 import '../components/favorite_button.dart';
 import '../models/superhero/Superhero.dart';
+import '../models/Favorite.dart';
+import '../utils/bloc_provider.dart';
+import '../utils/favorites_bloc.dart';
 
 class SuperheroScreen extends StatelessWidget {
   final Key key;
   final Superhero superHero;
+  final bool isFavorite;
 
-  SuperheroScreen(this.key, this.superHero) : super(key: key);
+  SuperheroScreen({
+    this.key,
+    @required this.superHero,
+    @required this.isFavorite,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -17,7 +25,16 @@ class SuperheroScreen extends StatelessWidget {
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 15),
-              child: FavoriteButton(key, superHero.id),
+              child: StreamBuilder<List<Favorite>>(
+                initialData: [Favorite(id: superHero.id, isFav: isFavorite)],
+                stream: BlocProvider.of<FavoritesBloc>(context).favorites,
+                builder: (context, snapshot) => FavoriteButton(
+                  key: key,
+                  id: superHero.id,
+                  isFavorite: snapshot.data
+                      .any((item) => item.id == superHero.id && item.isFav),
+                ),
+              ),
             ),
           ],
         ),

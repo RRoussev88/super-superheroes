@@ -236,12 +236,13 @@ class _HomeState extends State<Home> {
                   : StreamBuilder<List<Favorite>>(
                       stream: BlocProvider.of<FavoritesBloc>(context).favorites,
                       builder: (context, snapshot) {
+                        final List<int> favIds = snapshot.hasData
+                            ? snapshot.data.map((fav) => fav.id).toList()
+                            : [];
                         final List<Superhero> heroesToShow =
                             snapshot.hasData && _filterFavorites
                                 ? _filteredSuperHeroes
-                                    .where((hero) => snapshot.data
-                                        .map((fav) => fav.id)
-                                        .contains(hero.id))
+                                    .where((hero) => favIds.contains(hero.id))
                                     .toList()
                                 : _filteredSuperHeroes;
 
@@ -260,8 +261,10 @@ class _HomeState extends State<Home> {
                                   childAspectRatio: 0.75,
                                 ),
                                 itemBuilder: (ctx, index) => SuperheroGridTile(
-                                  ValueKey(heroesToShow[index].id),
-                                  heroesToShow[index],
+                                  key: ValueKey(heroesToShow[index].id),
+                                  superHero: heroesToShow[index],
+                                  isFavorite:
+                                      favIds.contains(heroesToShow[index].id),
                                 ),
                                 itemCount: heroesToShow.length,
                               )
@@ -272,8 +275,10 @@ class _HomeState extends State<Home> {
                                   color: Theme.of(context).dividerColor,
                                 ),
                                 itemBuilder: (ctx, index) => SuperheroTile(
-                                  ValueKey(heroesToShow[index].id),
-                                  heroesToShow[index],
+                                  key: ValueKey(heroesToShow[index].id),
+                                  superHero: heroesToShow[index],
+                                  isFavorite:
+                                      favIds.contains(heroesToShow[index].id),
                                 ),
                                 itemCount: heroesToShow.length,
                               );

@@ -7,15 +7,24 @@ import 'favorite_button.dart';
 class SuperheroTile extends StatelessWidget {
   final Key key;
   final Superhero superHero;
+  final bool isFavorite;
 
-  SuperheroTile(this.key, this.superHero) : super(key: key);
+  SuperheroTile({
+    this.key,
+    @required this.superHero,
+    @required this.isFavorite,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ListTile(
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => SuperheroScreen(key, superHero),
+              builder: (context) => SuperheroScreen(
+                key: key,
+                superHero: superHero,
+                isFavorite: isFavorite,
+              ),
             ),
           );
         },
@@ -70,6 +79,10 @@ class SuperheroTile extends StatelessWidget {
             ),
           ],
         ),
-        trailing: FavoriteButton(key, superHero.id),
+        trailing: FavoriteButton(
+          key: key,
+          id: superHero.id,
+          isFavorite: isFavorite,
+        ),
       );
 }
