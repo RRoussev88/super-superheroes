@@ -2,6 +2,8 @@ const String APP_TITLE = 'Heroes and Villains';
 
 const String BASE_URL = 'https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api';
 
+const String IMAGE_HERO_PLACEHOLDER = 'assets/images/superhero-placeholder.png';
+
 // Shared preferences keys has SP_ prefix
 const String SP_SHOW_GRID = 'showGrid';
 

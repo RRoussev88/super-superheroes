@@ -47,7 +47,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
             color: Colors.white70,
           ),
           child: ExpansionTile(
-            tilePadding: EdgeInsets.symmetric(horizontal: 10),
+            tilePadding: const EdgeInsets.symmetric(horizontal: 10),
             childrenPadding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
             expandedCrossAxisAlignment: CrossAxisAlignment.start,
             expandedAlignment: Alignment.topLeft,

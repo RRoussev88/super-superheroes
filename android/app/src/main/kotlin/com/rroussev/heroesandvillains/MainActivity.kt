@@ -1,4 +1,4 @@
-package com.rroussev.supersuperheroes
+package com.rroussev.heroesandvillains
 
 import io.flutter.embedding.android.FlutterActivity
 

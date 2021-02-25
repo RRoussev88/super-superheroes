@@ -23,17 +23,13 @@ class BottomSheetSearch extends StatelessWidget {
               color: Theme.of(context).accentColor,
             ),
             helperText: "Search superhero by name",
-            helperStyle: const TextStyle(
-              fontSize: 16,
-            ),
+            helperStyle: const TextStyle(fontSize: 16),
             filled: true,
             fillColor: Colors.white,
             border: const OutlineInputBorder(),
             prefixIcon: const Icon(Icons.search),
           ),
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-          ),
+          style: TextStyle(color: Theme.of(context).primaryColor),
         ),
       );
 }

@@ -6,6 +6,7 @@ import '../models/superhero/Superhero.dart';
 import '../models/Favorite.dart';
 import '../utils/bloc_provider.dart';
 import '../utils/favorites_bloc.dart';
+import '../utils/constants.dart' as AppConstants;
 
 class SuperheroScreen extends StatelessWidget {
   final Key key;
@@ -42,15 +43,25 @@ class SuperheroScreen extends StatelessWidget {
           builder: (BuildContext ctx) => Stack(
             children: <Widget>[
               Center(
-                child: Hero(
-                  tag: superHero.id,
-                  child: FadeInImage.assetNetwork(
-                    height: MediaQuery.of(ctx).size.height -
-                        Scaffold.of(ctx).appBarMaxHeight,
-                    placeholder: 'assets/images/superhero-placeholder.png',
-                    image: superHero.images.lg,
-                    fit: BoxFit.fitHeight,
-                  ),
+                child: Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColorLight),
+                    ),
+                    Center(
+                      child: Hero(
+                        tag: superHero.id,
+                        child: FadeInImage.assetNetwork(
+                          height: MediaQuery.of(ctx).size.height -
+                              Scaffold.of(ctx).appBarMaxHeight,
+                          placeholder: AppConstants.IMAGE_HERO_PLACEHOLDER,
+                          image: superHero.images.lg,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Align(
