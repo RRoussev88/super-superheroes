@@ -40,36 +40,42 @@ class SuperheroScreen extends StatelessWidget {
           ],
         ),
         body: Builder(
-          builder: (BuildContext ctx) => Stack(
-            children: <Widget>[
-              Center(
-                child: Stack(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColorLight),
-                    ),
-                    Center(
-                      child: Hero(
-                        tag: superHero.id,
-                        child: FadeInImage.assetNetwork(
-                          height: MediaQuery.of(ctx).size.height -
-                              Scaffold.of(ctx).appBarMaxHeight,
-                          placeholder: AppConstants.IMAGE_HERO_PLACEHOLDER,
-                          image: superHero.images.lg,
-                          fit: BoxFit.fitHeight,
+          builder: (BuildContext ctx) {
+            final Size deviceSize = MediaQuery.of(ctx).size;
+
+            return Stack(
+              children: <Widget>[
+                Center(
+                  child: Stack(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorLight),
+                      ),
+                      Center(
+                        child: Hero(
+                          tag: superHero.id,
+                          child: FadeInImage.assetNetwork(
+                            height: deviceSize.height -
+                                Scaffold.of(ctx).appBarMaxHeight,
+                            placeholder: AppConstants.IMAGE_HERO_PLACEHOLDER,
+                            image: deviceSize.shortestSide >= 400
+                                ? superHero.images.lg
+                                : superHero.images.md,
+                            fit: BoxFit.fitHeight,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: DescriptionCard(superHero),
-              ),
-            ],
-          ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: DescriptionCard(superHero),
+                ),
+              ],
+            );
+          },
         ),
       );
 }

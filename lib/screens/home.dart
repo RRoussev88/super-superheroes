@@ -245,17 +245,16 @@ class _HomeState extends State<Home> {
                                     .where((hero) => favIds.contains(hero.id))
                                     .toList()
                                 : _filteredSuperHeroes;
+                        final MediaQueryData queryData = MediaQuery.of(context);
 
                         return _showGrid
                             ? GridView.builder(
                                 controller: _scrollGridController,
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount:
-                                      MediaQuery.of(context).orientation ==
-                                              Orientation.portrait
-                                          ? 2
-                                          : 3,
+                                  crossAxisCount: queryData.size.width > 400
+                                      ? (queryData.size.width / 400).ceil()
+                                      : 2,
                                   crossAxisSpacing: 4,
                                   mainAxisSpacing: 4,
                                   childAspectRatio: 0.75,

@@ -48,7 +48,7 @@ class SuperheroGridTile extends StatelessWidget {
                           Hero(
                             tag: superHero.id,
                             child: Image.network(
-                              superHero.images.md,
+                              superHero.images.sm,
                               frameBuilder: (
                                 BuildContext context,
                                 Widget child,
@@ -90,37 +90,49 @@ class SuperheroGridTile extends StatelessWidget {
                         padding: EdgeInsets.all(8),
                         width: double.infinity,
                         color: Theme.of(context).secondaryHeaderColor,
-                        child: Column(
-                          children: [
-                            Text(
-                              superHero.name,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.headline6,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.movie_filter,
-                                  size: 22,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .subtitle2
-                                      .color,
+                        child: LayoutBuilder(builder: (_, c8s) {
+                          final ThemeData themeData = Theme.of(context);
+
+                          return Column(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  superHero.name,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: c8s.maxWidth > 200
+                                      ? themeData.textTheme.headline6
+                                          .copyWith(fontSize: c8s.maxWidth / 8)
+                                      : themeData.textTheme.headline6,
                                 ),
-                                SizedBox(width: 2),
-                                Flexible(
-                                  child: Text(
-                                    superHero.biography.publisher ?? '-',
-                                    overflow: TextOverflow.ellipsis,
-                                    style:
-                                        Theme.of(context).textTheme.subtitle2,
-                                  ),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.movie_filter,
+                                      size: 22,
+                                      color:
+                                          themeData.textTheme.subtitle2.color,
+                                    ),
+                                    SizedBox(width: 2),
+                                    Flexible(
+                                      child: Text(
+                                        superHero.biography.publisher ?? '-',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: c8s.maxWidth > 200
+                                            ? themeData.textTheme.subtitle2
+                                                .copyWith(
+                                                    fontSize: c8s.maxWidth / 10)
+                                            : themeData.textTheme.subtitle2,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                            ],
+                          );
+                        }),
                       ),
                     ),
                   ],

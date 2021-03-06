@@ -59,7 +59,6 @@ class SuperheroTile extends StatelessWidget {
         ),
         title: Text(
           superHero.name,
-          overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.headline5,
         ),
         subtitle: Row(
@@ -73,7 +72,6 @@ class SuperheroTile extends StatelessWidget {
             Flexible(
               child: Text(
                 superHero.biography.publisher ?? '-',
-                overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.subtitle2,
               ),
             ),

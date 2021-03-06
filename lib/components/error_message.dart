@@ -51,10 +51,17 @@ class ErrorMessage extends StatelessWidget {
                   ),
                 ],
               ),
-              RaisedButton.icon(
+              ElevatedButton.icon(
                 onPressed: reload,
-                elevation: 2.0,
-                textColor: Colors.white,
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    const EdgeInsets.all(12),
+                  ),
+                  elevation: MaterialStateProperty.all<double>(2),
+                  textStyle: MaterialStateProperty.all<TextStyle>(
+                    const TextStyle(color: Colors.white),
+                  ),
+                ),
                 icon: const Icon(Icons.refresh_sharp),
                 label: const Text(
                   'Reload',

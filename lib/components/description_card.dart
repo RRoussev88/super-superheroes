@@ -26,9 +26,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
 
   @override
   Widget build(BuildContext context) => FractionallySizedBox(
-        widthFactor: MediaQuery.of(context).orientation == Orientation.portrait
-            ? 1
-            : 0.5,
+        widthFactor: MediaQuery.of(context).size.width >= 400 ? 0.5 : 1,
         child: Container(
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
