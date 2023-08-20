@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 
 class Appearance {
   final String gender;
@@ -10,12 +9,12 @@ class Appearance {
   final String hairColor;
 
   const Appearance({
-    @required this.gender,
-    @required this.race,
-    @required this.height,
-    @required this.weight,
-    @required this.eyeColor,
-    @required this.hairColor,
+    required this.gender,
+    required this.race,
+    required this.height,
+    required this.weight,
+    required this.eyeColor,
+    required this.hairColor,
   });
 
   factory Appearance.fromJson(Map<String, dynamic> json) => Appearance(

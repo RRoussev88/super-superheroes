@@ -12,7 +12,7 @@ class DBProvider {
 
   static final DBProvider db = DBProvider._();
 
-  static Database _database;
+  late final Database _database;
 
   Future<Database> get database async {
     if (_database == null) {

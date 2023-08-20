@@ -14,9 +14,9 @@ class SuperheroScreen extends StatelessWidget {
   final bool isFavorite;
 
   SuperheroScreen({
-    this.key,
-    @required this.superHero,
-    @required this.isFavorite,
+    required this.key,
+    required this.superHero,
+    required this.isFavorite,
   }) : super(key: key);
 
   @override
@@ -32,8 +32,9 @@ class SuperheroScreen extends StatelessWidget {
                 builder: (context, snapshot) => FavoriteButton(
                   key: key,
                   id: superHero.id,
-                  isFavorite: snapshot.data
-                      .any((item) => item.id == superHero.id && item.isFav),
+                  isFavorite: snapshot.data?.any(
+                          (item) => item.id == superHero.id && item.isFav) ??
+                      false,
                 ),
               ),
             ),
@@ -57,7 +58,7 @@ class SuperheroScreen extends StatelessWidget {
                           tag: superHero.id,
                           child: FadeInImage.assetNetwork(
                             height: deviceSize.height -
-                                Scaffold.of(ctx).appBarMaxHeight,
+                                (Scaffold.of(ctx).appBarMaxHeight ?? 0),
                             placeholder: AppConstants.IMAGE_HERO_PLACEHOLDER,
                             image: deviceSize.shortestSide >= 400
                                 ? superHero.images.lg

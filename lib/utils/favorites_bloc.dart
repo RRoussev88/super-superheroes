@@ -5,7 +5,7 @@ import 'bloc.dart';
 import 'database.dart';
 
 class FavoritesBloc implements Bloc {
-  final StreamController _favoritesController =
+  final StreamController<List<Favorite>> _favoritesController =
       StreamController<List<Favorite>>.broadcast();
 
   FavoritesBloc() {

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 
 class Biography {
   final String fullName;
@@ -11,13 +10,13 @@ class Biography {
   final String alignment;
 
   const Biography({
-    @required this.fullName,
-    @required this.alterEgos,
-    @required this.aliases,
-    @required this.placeOfBirth,
-    @required this.firstAppearance,
-    @required this.publisher,
-    @required this.alignment,
+    required this.fullName,
+    required this.alterEgos,
+    required this.aliases,
+    required this.placeOfBirth,
+    required this.firstAppearance,
+    required this.publisher,
+    required this.alignment,
   });
 
   factory Biography.fromJson(Map<String, dynamic> json) => Biography(

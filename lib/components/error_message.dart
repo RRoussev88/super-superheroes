@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class ErrorMessage extends StatelessWidget {
   final String message;
-  final Function reload;
+  final void Function() reload;
 
   const ErrorMessage({
-    @required this.message,
-    @required this.reload,
+    required this.message,
+    required this.reload,
   });
 
   @override
@@ -24,7 +24,7 @@ class ErrorMessage extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).indicatorColor,
           ),
           padding: const EdgeInsets.all(30),
           child: Column(

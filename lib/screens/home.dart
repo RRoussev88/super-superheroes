@@ -16,7 +16,7 @@ import '../utils/bloc_provider.dart';
 import '../utils/favorites_bloc.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key key}) : super(key: key);
+  const Home({required key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -28,14 +28,14 @@ class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _sheetKey = GlobalKey();
 
-  ScrollController _scrollListController;
-  ScrollController _scrollGridController;
+  ScrollController _scrollListController = ScrollController();
+  ScrollController _scrollGridController = ScrollController();
 
-  VoidCallback _showBottomSheetCallback;
+  VoidCallback _showBottomSheetCallback = () => {};
   double _heightFactor = 1.0;
   List<Superhero> _superHeroes = [];
   List<Superhero> _filteredSuperHeroes = [];
-  bool _isLodaingHeroes = false;
+  bool _isLoadingHeroes = false;
   bool _hasError = false;
   bool _showGrid = false;
   bool _scrolledGrid = true;
@@ -48,11 +48,11 @@ class _HomeState extends State<Home> {
       return;
     }
     setState(() {
-      _isLodaingHeroes = true;
+      _isLoadingHeroes = true;
     });
+    var getUri = Uri.parse("${AppConstants.BASE_URL}/all.json");
     try {
-      http.Response response =
-          await http.get("${AppConstants.BASE_URL}/all.json");
+      http.Response response = await http.get(getUri);
       if (response.statusCode == 200) {
         List<dynamic> decodedHeroes = jsonDecode(response.body);
         if (decodedHeroes.length > 0) {
@@ -78,28 +78,28 @@ class _HomeState extends State<Home> {
       });
     } finally {
       setState(() {
-        _isLodaingHeroes = false;
+        _isLoadingHeroes = false;
       });
     }
   }
 
   void _showBottomSheet() {
-    PersistentBottomSheetController bottomSheetController =
-        _scaffoldKey.currentState.showBottomSheet(
+    PersistentBottomSheetController? bottomSheetController =
+        _scaffoldKey.currentState?.showBottomSheet(
       (context) => BottomSheetSearch(
         key: _sheetKey,
         searchController: _searchController,
       ),
     );
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      RenderBox sheetBox = _sheetKey.currentContext.findRenderObject();
-      RenderBox skaffoldBox = _scaffoldKey.currentContext.findRenderObject();
+      double sheetHeight = _sheetKey.currentContext?.size?.height ?? 0;
+      double scaffoldHeight = _scaffoldKey.currentContext?.size?.height ?? 1;
       setState(() {
-        _showBottomSheetCallback = () => bottomSheetController.close();
-        _heightFactor = 1 - sheetBox.size.height / skaffoldBox.size.height;
+        _showBottomSheetCallback = () => bottomSheetController?.close();
+        _heightFactor = 1 - sheetHeight / scaffoldHeight;
       });
     });
-    bottomSheetController.closed.whenComplete(() {
+    bottomSheetController?.closed.whenComplete(() {
       if (mounted) {
         setState(() {
           _showBottomSheetCallback = _showBottomSheet;
@@ -159,10 +159,8 @@ class _HomeState extends State<Home> {
   initState() {
     super.initState();
     _setSavedSettings();
-    _scrollListController = ScrollController();
     _scrollListController
         .addListener(() => _setScrolledPercentage(_scrollListController));
-    _scrollGridController = ScrollController();
     _scrollGridController
         .addListener(() => _setScrolledPercentage(_scrollGridController));
     _searchController.addListener(_filterHeroes);
@@ -226,7 +224,7 @@ class _HomeState extends State<Home> {
       body: SafeArea(
         child: FractionallySizedBox(
           heightFactor: _heightFactor,
-          child: _isLodaingHeroes
+          child: _isLoadingHeroes
               ? const Center(child: const CircularProgressIndicator())
               : _hasError
                   ? ErrorMessage(
@@ -237,7 +235,7 @@ class _HomeState extends State<Home> {
                       stream: BlocProvider.of<FavoritesBloc>(context).favorites,
                       builder: (context, snapshot) {
                         final List<int> favIds = snapshot.hasData
-                            ? snapshot.data.map((fav) => fav.id).toList()
+                            ? snapshot.data?.map((fav) => fav.id).toList() ?? []
                             : [];
                         final List<Superhero> heroesToShow =
                             snapshot.hasData && _filterFavorites

@@ -10,9 +10,9 @@ class FavoriteButton extends StatelessWidget {
   final bool isFavorite;
 
   const FavoriteButton({
-    this.key,
-    @required this.id,
-    @required this.isFavorite,
+    required this.key,
+    required this.id,
+    required this.isFavorite,
   }) : super(key: key);
 
   void _toggleFavorite(BuildContext ctx) {

@@ -7,8 +7,8 @@ class StatsIndicator extends StatelessWidget {
   final double value;
 
   const StatsIndicator({
-    @required this.statName,
-    @required this.value,
+    required this.statName,
+    required this.value,
   });
 
   @override

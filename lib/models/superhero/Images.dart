@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class Images {
   final String xs;
   final String sm;
@@ -7,10 +5,10 @@ class Images {
   final String lg;
 
   const Images({
-    @required this.xs,
-    @required this.sm,
-    @required this.md,
-    @required this.lg,
+    required this.xs,
+    required this.sm,
+    required this.md,
+    required this.lg,
   });
 
   factory Images.fromJson(Map<String, dynamic> json) => Images(

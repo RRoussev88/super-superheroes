@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 import 'Appearance.dart';
 import 'Biography.dart';
 import 'Connections.dart';
@@ -20,16 +18,16 @@ class Superhero {
   final bool isFavorite;
 
   const Superhero({
-    @required this.id,
-    @required this.name,
-    @required this.slug,
-    @required this.powerstats,
-    @required this.appearance,
-    @required this.biography,
-    @required this.work,
-    @required this.connections,
-    @required this.images,
-    this.isFavorite,
+    required this.id,
+    required this.name,
+    required this.slug,
+    required this.powerstats,
+    required this.appearance,
+    required this.biography,
+    required this.work,
+    required this.connections,
+    required this.images,
+    required this.isFavorite,
   });
 
   factory Superhero.fromJson(Map<String, dynamic> json) => Superhero(

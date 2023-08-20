@@ -21,7 +21,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _appBarMaxHeight = Scaffold.of(context).appBarMaxHeight;
+    _appBarMaxHeight = Scaffold.of(context).appBarMaxHeight ?? 0;
   }
 
   @override
@@ -32,7 +32,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context).accentColor.withOpacity(0.5),
+                color: Theme.of(context).indicatorColor.withOpacity(0.5),
                 spreadRadius: 3,
                 blurRadius: 3,
                 offset: const Offset(3, 3),
@@ -56,7 +56,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
               style: TextStyle(
                 decoration: TextDecoration.underline,
                 fontSize: 24,
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).indicatorColor,
               ),
             ),
             children: [

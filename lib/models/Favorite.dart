@@ -1,12 +1,10 @@
-import 'package:flutter/foundation.dart';
-
 import '../utils/constants.dart' as AppConstants;
 
 class Favorite {
   final int id;
   final bool isFav;
 
-  const Favorite({@required this.id, @required this.isFav});
+  const Favorite({required this.id, required this.isFav});
 
   factory Favorite.fromJson(Map<String, dynamic> json) => Favorite(
         id: json[AppConstants.DB_COLUMN_ID],

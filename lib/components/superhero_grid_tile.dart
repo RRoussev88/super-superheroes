@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 import '../models/superhero/Superhero.dart';
@@ -12,9 +10,9 @@ class SuperheroGridTile extends StatelessWidget {
   final bool isFavorite;
 
   SuperheroGridTile({
-    this.key,
-    @required this.superHero,
-    @required this.isFavorite,
+    required this.key,
+    required this.superHero,
+    required this.isFavorite,
   }) : super(key: key);
 
   @override
@@ -52,7 +50,7 @@ class SuperheroGridTile extends StatelessWidget {
                               frameBuilder: (
                                 BuildContext context,
                                 Widget child,
-                                int frame,
+                                int? frame,
                                 bool wasSynchronouslyLoaded,
                               ) =>
                                   frame == null
@@ -100,9 +98,9 @@ class SuperheroGridTile extends StatelessWidget {
                                   superHero.name,
                                   overflow: TextOverflow.ellipsis,
                                   style: c8s.maxWidth > 200
-                                      ? themeData.textTheme.headline6
-                                          .copyWith(fontSize: c8s.maxWidth / 8)
-                                      : themeData.textTheme.headline6,
+                                      ? themeData.textTheme.titleLarge
+                                          ?.copyWith(fontSize: c8s.maxWidth / 8)
+                                      : themeData.textTheme.titleLarge,
                                 ),
                               ),
                               Expanded(
@@ -112,19 +110,21 @@ class SuperheroGridTile extends StatelessWidget {
                                     Icon(
                                       Icons.movie_filter,
                                       size: 22,
-                                      color:
-                                          themeData.textTheme.subtitle2.color,
+                                      color: themeData
+                                          .textTheme.titleMedium?.color,
                                     ),
                                     SizedBox(width: 2),
                                     Flexible(
                                       child: Text(
-                                        superHero.biography.publisher ?? '-',
+                                        superHero.biography.publisher.length > 0
+                                            ? superHero.biography.publisher
+                                            : '-',
                                         overflow: TextOverflow.ellipsis,
                                         style: c8s.maxWidth > 200
-                                            ? themeData.textTheme.subtitle2
-                                                .copyWith(
+                                            ? themeData.textTheme.titleMedium
+                                                ?.copyWith(
                                                     fontSize: c8s.maxWidth / 10)
-                                            : themeData.textTheme.subtitle2,
+                                            : themeData.textTheme.titleMedium,
                                       ),
                                     ),
                                   ],

@@ -10,9 +10,9 @@ class SuperheroTile extends StatelessWidget {
   final bool isFavorite;
 
   SuperheroTile({
-    this.key,
-    @required this.superHero,
-    @required this.isFavorite,
+    required this.key,
+    required this.superHero,
+    required this.isFavorite,
   }) : super(key: key);
 
   @override
@@ -41,7 +41,7 @@ class SuperheroTile extends StatelessWidget {
                   frameBuilder: (
                     BuildContext context,
                     Widget child,
-                    int frame,
+                    int? frame,
                     bool wasSynchronouslyLoaded,
                   ) =>
                       frame == null
@@ -59,20 +59,22 @@ class SuperheroTile extends StatelessWidget {
         ),
         title: Text(
           superHero.name,
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
         subtitle: Row(
           children: <Widget>[
             Icon(
               Icons.movie_filter,
               size: 22,
-              color: Theme.of(context).textTheme.subtitle2.color,
+              color: Theme.of(context).textTheme.titleMedium?.color,
             ),
             SizedBox(width: 2),
             Flexible(
               child: Text(
-                superHero.biography.publisher ?? '-',
-                style: Theme.of(context).textTheme.subtitle2,
+                superHero.biography.publisher.length > 0
+                    ? superHero.biography.publisher
+                    : '-',
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
           ],

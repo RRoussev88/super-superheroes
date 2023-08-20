@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class BottomSheetSearch extends StatelessWidget {
   final TextEditingController searchController;
 
-  const BottomSheetSearch({Key key, this.searchController}) : super(key: key);
+  const BottomSheetSearch({required Key key, required this.searchController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) => Container(
@@ -20,7 +21,7 @@ class BottomSheetSearch extends StatelessWidget {
           decoration: InputDecoration(
             labelText: "Superhero name",
             labelStyle: TextStyle(
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).indicatorColor,
             ),
             helperText: "Search superhero by name",
             helperStyle: const TextStyle(fontSize: 16),

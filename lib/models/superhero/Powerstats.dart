@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class Powerstats {
   final int intelligence;
   final int strength;
@@ -9,12 +7,12 @@ class Powerstats {
   final int combat;
 
   const Powerstats({
-    @required this.intelligence,
-    @required this.strength,
-    @required this.speed,
-    @required this.durability,
-    @required this.power,
-    @required this.combat,
+    required this.intelligence,
+    required this.strength,
+    required this.speed,
+    required this.durability,
+    required this.power,
+    required this.combat,
   });
 
   factory Powerstats.fromJson(Map<String, dynamic> json) => Powerstats(

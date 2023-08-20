@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     primaryColorLight: Colors.teal[100],
     primaryColorDark: Colors.teal[800],
     secondaryHeaderColor: Colors.teal[50],
-    accentColor: const Color(0xFF2A3542),
+    indicatorColor: const Color(0xFF2A3542),
     dividerColor: const Color(0xFF2A3542).withAlpha(45),
     visualDensity: VisualDensity.adaptivePlatformDensity,
     buttonTheme: ButtonThemeData(
@@ -26,18 +26,18 @@ class MyApp extends StatelessWidget {
       textTheme: ButtonTextTheme.accent,
     ),
     textTheme: TextTheme(
-      headline5: TextStyle(
+      headlineSmall: TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.bold,
         color: Colors.black.withAlpha(180),
       ),
-      headline6: TextStyle(
+      titleLarge: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
         color: Colors.black.withAlpha(180),
       ),
-      subtitle1: TextStyle(color: Colors.black.withAlpha(140)),
-      subtitle2: TextStyle(
+      titleMedium: TextStyle(color: Colors.black.withAlpha(140)),
+      titleSmall: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.normal,
         color: Colors.black.withAlpha(140),
@@ -47,12 +47,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider<FavoritesBloc>(
+        key: Key("home"),
         bloc: FavoritesBloc(),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: AppConstants.APP_TITLE,
           theme: themeData,
-          home: Home(),
+          home: Home(key: "home"),
         ),
       );
 }
